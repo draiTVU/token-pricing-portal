@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Settings, Database, Package, Category } from "lucide-react";
+import { Settings, Database, Package, FolderOpen } from "lucide-react";
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -16,7 +16,7 @@ const AdminLayout = ({ children, title }: AdminLayoutProps) => {
   const navItems = [
     { path: "/admin", label: "Dashboard", icon: Settings },
     { path: "/admin/skus", label: "SKU Management", icon: Package },
-    { path: "/admin/categories", label: "Categories", icon: Category },
+    { path: "/admin/categories", label: "Categories", icon: FolderOpen },
   ];
 
   return (
