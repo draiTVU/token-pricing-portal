@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 interface SKU {
   id: string;
@@ -120,18 +120,8 @@ const Index = () => {
   });
 
   const formatTokens = (tokens: number) => {
-    if (tokens === 0) return "Not Available";
-    return tokens.toLocaleString() + " tokens";
-  };
-
-  const getPricingIcon = (type: string) => {
-    switch (type) {
-      case "ppu": return <TrendingUp className="w-4 h-4" />;
-      case "monthly": return <Calendar className="w-4 h-4" />;
-      case "yearly": return <Clock className="w-4 h-4" />;
-      case "threeyear": return <Users className="w-4 h-4" />;
-      default: return <Package className="w-4 h-4" />;
-    }
+    if (tokens === 0) return "N/A";
+    return tokens.toLocaleString();
   };
 
   return (
@@ -181,7 +171,7 @@ const Index = () => {
         </div>
 
         {/* SKU Grid */}
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
           {filteredSKUs.map((sku) => (
             <Card key={sku.id} className={`relative hover:shadow-lg transition-shadow ${sku.popular ? 'ring-2 ring-blue-500' : ''}`}>
               {sku.popular && (
@@ -207,77 +197,64 @@ const Index = () => {
                 <p className="text-gray-600 text-sm mt-2">{sku.description}</p>
               </CardHeader>
 
-              <CardContent className="space-y-4">
-                {/* Pricing Tabs */}
-                <Tabs defaultValue="monthly" className="w-full">
-                  <TabsList className="grid w-full grid-cols-2">
-                    <TabsTrigger value="monthly" className="text-xs">Monthly/PPU</TabsTrigger>
-                    <TabsTrigger value="yearly" className="text-xs">Annual Plans</TabsTrigger>
-                  </TabsList>
-                  
-                  <TabsContent value="monthly" className="space-y-2 mt-3">
-                    <div className="grid grid-cols-2 gap-2">
-                      <div className="bg-gray-50 p-3 rounded-lg">
-                        <div className="flex items-center gap-1 mb-1">
-                          {getPricingIcon("ppu")}
-                          <span className="text-xs font-medium text-gray-700">Pay-per-Use</span>
-                        </div>
-                        <p className="text-sm font-bold text-gray-900">
+              <CardContent>
+                {/* Pricing Table */}
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <h4 className="text-sm font-semibold text-gray-900 mb-3">Token Pricing</h4>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead className="text-xs py-2">Plan Type</TableHead>
+                        <TableHead className="text-xs py-2 text-right">Tokens</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      <TableRow>
+                        <TableCell className="text-xs py-2 font-medium">
+                          <div className="flex items-center gap-1">
+                            <TrendingUp className="w-3 h-3" />
+                            Pay-per-Use
+                          </div>
+                        </TableCell>
+                        <TableCell className="text-xs py-2 text-right font-mono">
                           {formatTokens(sku.pricing.ppuTokens)}
-                        </p>
-                      </div>
-                      <div className="bg-blue-50 p-3 rounded-lg">
-                        <div className="flex items-center gap-1 mb-1">
-                          {getPricingIcon("monthly")}
-                          <span className="text-xs font-medium text-blue-700">Monthly</span>
-                        </div>
-                        <p className="text-sm font-bold text-blue-900">
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="text-xs py-2 font-medium">
+                          <div className="flex items-center gap-1">
+                            <Calendar className="w-3 h-3" />
+                            Monthly
+                          </div>
+                        </TableCell>
+                        <TableCell className="text-xs py-2 text-right font-mono">
                           {formatTokens(sku.pricing.monthlyTokens)}
-                        </p>
-                      </div>
-                    </div>
-                  </TabsContent>
-                  
-                  <TabsContent value="yearly" className="space-y-2 mt-3">
-                    <div className="grid grid-cols-2 gap-2">
-                      <div className="bg-green-50 p-3 rounded-lg">
-                        <div className="flex items-center gap-1 mb-1">
-                          {getPricingIcon("yearly")}
-                          <span className="text-xs font-medium text-green-700">1 Year</span>
-                        </div>
-                        <p className="text-sm font-bold text-green-900">
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="text-xs py-2 font-medium">
+                          <div className="flex items-center gap-1">
+                            <Clock className="w-3 h-3" />
+                            1 Year
+                          </div>
+                        </TableCell>
+                        <TableCell className="text-xs py-2 text-right font-mono">
                           {formatTokens(sku.pricing.oneYearTokens)}
-                        </p>
-                      </div>
-                      <div className="bg-purple-50 p-3 rounded-lg">
-                        <div className="flex items-center gap-1 mb-1">
-                          {getPricingIcon("threeyear")}
-                          <span className="text-xs font-medium text-purple-700">3 Years</span>
-                        </div>
-                        <p className="text-sm font-bold text-purple-900">
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="text-xs py-2 font-medium">
+                          <div className="flex items-center gap-1">
+                            <Users className="w-3 h-3" />
+                            3 Years
+                          </div>
+                        </TableCell>
+                        <TableCell className="text-xs py-2 text-right font-mono">
                           {formatTokens(sku.pricing.threeYearTokens)}
-                        </p>
-                      </div>
-                    </div>
-                  </TabsContent>
-                </Tabs>
-
-                {/* Features */}
-                <div>
-                  <h4 className="text-sm font-medium text-gray-900 mb-2">Key Features</h4>
-                  <div className="space-y-1">
-                    {sku.features.slice(0, 3).map((feature, index) => (
-                      <div key={index} className="flex items-center text-xs text-gray-600">
-                        <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-2"></div>
-                        {feature}
-                      </div>
-                    ))}
-                    {sku.features.length > 3 && (
-                      <p className="text-xs text-gray-500 italic">
-                        +{sku.features.length - 3} more features
-                      </p>
-                    )}
-                  </div>
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
                 </div>
               </CardContent>
             </Card>
